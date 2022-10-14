@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_g2/model/profile_model.dart';
 import 'package:flutter_g2/page/auth/sign_up.dart';
+import 'package:flutter_g2/page/fruits/fruits_view.dart';
 import 'package:flutter_g2/page/home/home_view.dart';
+import 'package:flutter_g2/page/users/users_view.dart';
 import 'package:flutter_g2/service/prefs.dart';
+import 'package:flutter_g2/service/sql_src.dart';
 /*
 Created by Axmadjon Isaqov on 09:17:23 12.10.2022
 © 2022 @axi_dev 
@@ -15,6 +18,7 @@ Mavzu:::Shared Preferences
 */
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  SqlService();
   runApp(const MyApp());
 }
 
@@ -29,7 +33,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       routes: {
         '/home': (context) => const HomeView(),
-        '/auth': (context) => const SignUpScreen()
+        '/auth': (context) => const SignUpScreen(),
+        '/users': (context) => const UsersView(),
+        '/fruits': (context) => const FruitsView()
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,

@@ -1,9 +1,10 @@
-import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_g2/main.dart';
-import 'package:flutter_g2/model/profile_model.dart';
+import 'package:flutter_g2/page/fruits/fruits_view.dart';
+import 'package:flutter_g2/page/users/users_view.dart';
 import 'package:flutter_g2/service/prefs.dart';
 
 class HomeView extends StatefulWidget {
@@ -14,6 +15,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  List<Widget?> pages = [const UsersView(), const FruitsView()];
   void logout() async {
     try {
       final profileDeleted = await Prefs.deleteDataFromLocal(key: 'data');
@@ -41,32 +43,41 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
+        title: const Text('Database Example'),
         actions: [
           IconButton(onPressed: logout, icon: const Icon(Icons.logout))
         ],
       ),
-      body: Center(
-        child: FutureBuilder<String?>(
-            future: Prefs.loadDataFromLocal(key: 'data'),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const Text('you have an error');
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const LinearProgressIndicator();
-              }
-              final ProfileModel profileModel =
-                  ProfileModel.fromJson(jsonDecode(snapshot.data!));
-
-              return Card(
-                child: ListTile(
-                  title: Text(profileModel.email ?? 'unknown'),
-                  subtitle: Text(profileModel.password ?? 'password'),
-                ),
-              );
-            }),
-      ),
+      body: CupertinoTabScaffold(
+          tabBar: CupertinoTabBar(items: const [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.data_object_sharp), label: 'SQL'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.data_object_sharp), label: 'NoSQL'),
+          ]),
+          tabBuilder: (context, index) => pages[index]!),
     );
+
+    // body: Center(
+    //   child: FutureBuilder<String?>(
+    //       future: Prefs.loadDataFromLocal(key: 'data'),
+    //       builder: (context, snapshot) {
+    //         if (!snapshot.hasData) {
+    //           return const Text('you have an error');
+    //         }
+    //         if (snapshot.connectionState == ConnectionState.waiting) {
+    //           return const LinearProgressIndicator();
+    //         }
+    //         final ProfileModel profileModel =
+    //             ProfileModel.fromJson(jsonDecode(snapshot.data!));
+
+    //         return Card(
+    //           child: ListTile(
+    //             title: Text(profileModel.email ?? 'unknown'),
+    //             subtitle: Text(profileModel.password ?? 'password'),
+    //           ),
+    //         );
+    //       }),
+    // ),
   }
 }
