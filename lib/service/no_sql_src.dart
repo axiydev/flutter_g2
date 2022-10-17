@@ -23,6 +23,7 @@ class HiveDbSrc {
     try {
       final dir = await getApplicationDocumentsDirectory();
       Hive.init(dir.path);
+      Hive.registerAdapter(FruitModelAdapter());
       _hiveBox = await Hive.openBox('fruitdb');
       debugPrint("HIVE INITED AND OPENED BOX");
     } catch (e) {
@@ -35,8 +36,7 @@ class HiveDbSrc {
       {required List<FruitModel?> fruits, required String key}) async {
     bool? isSaved = false;
     try {
-      var fruitsJson = fruits.map((e) => e!.toJson()).toList();
-      await _hiveBox!.put(key, fruitsJson);
+      await _hiveBox!.put(key, fruits);
       isSaved = true;
       return isSaved;
     } catch (e) {
@@ -46,12 +46,12 @@ class HiveDbSrc {
   }
 
 //? get fruits
-  Future<List<Map<String, dynamic>?>> getFruits({required String key}) async {
+  Future<List<FruitModel?>> getFruits({required String key}) async {
     try {
-      List<Map<String, dynamic>?>? data = await _hiveBox!.get(
+      List<FruitModel?> data = await _hiveBox!.get(
         key,
       );
-      return data!;
+      return data;
     } catch (e, s) {
       log(e.toString());
       log(s.toString());
@@ -79,12 +79,11 @@ class HiveDbSrc {
       {required String key, required FruitModel fruit}) async {
     try {
       var data = await getFruits(key: 'fruits');
-      data.add(fruit.toJson());
+      data.add(fruit);
       await _hiveBox!.delete(key);
       assert(_hiveBox!.get(key) == null, "null ga teng");
       debugPrint('DATA ADDED');
-      return await saveDataToHiveBoxAsJson(
-          fruits: data.map((e) => FruitModel.fromJson(e!)).toList(), key: key);
+      return await saveDataToHiveBoxAsJson(fruits: data, key: key);
     } catch (e) {
       log(e.toString());
       return false;
@@ -96,12 +95,11 @@ class HiveDbSrc {
       {required String? id, required String key}) async {
     try {
       var data = await getFruits(key: key);
-      data.removeWhere((element) => element!['id'] == id);
+      data.removeWhere((element) => element!.id == id);
       await _hiveBox!.delete(key);
       assert(_hiveBox!.get(key) == null, "null ga teng");
       debugPrint('DATA DELETED');
-      return await saveDataToHiveBoxAsJson(
-          fruits: data.map((e) => FruitModel.fromJson(e!)).toList(), key: key);
+      return await saveDataToHiveBoxAsJson(fruits: data, key: key);
     } catch (e) {
       log(e.toString());
     }

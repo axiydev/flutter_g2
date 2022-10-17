@@ -9,6 +9,7 @@ import 'package:flutter_g2/page/users/users_view.dart';
 import 'package:flutter_g2/service/no_sql_src.dart';
 import 'package:flutter_g2/service/prefs.dart';
 import 'package:flutter_g2/service/sql_src.dart';
+
 /*
 Created by Axmadjon Isaqov on 09:17:23 12.10.2022
 © 2022 @axi_dev 
@@ -17,7 +18,7 @@ Created by Axmadjon Isaqov on 09:17:23 12.10.2022
 /*
 Mavzu:::Shared Preferences
 */
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SqlService();
   HiveDbSrc();

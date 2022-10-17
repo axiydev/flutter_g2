@@ -145,7 +145,7 @@ class _FruitsViewState extends State<FruitsView> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Builder(builder: (context) {
-          return FutureBuilder<List<Map<String, dynamic>?>?>(
+          return FutureBuilder<List<FruitModel?>>(
               future: dbService.getFruits(key: 'fruits'),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -168,8 +168,7 @@ class _FruitsViewState extends State<FruitsView> {
                 return ListView.separated(
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      final FruitModel fruit =
-                          FruitModel.fromJson(snapshot.data![index]!);
+                      final FruitModel fruit = snapshot.data![index]!;
                       return Card(
                         child: ListTile(
                           title: Text(fruit.name!),
