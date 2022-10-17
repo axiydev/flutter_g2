@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_g2/main.dart';
 import 'package:flutter_g2/page/fruits/fruits_view.dart';
+import 'package:flutter_g2/page/techno/tecno_view.dart';
 import 'package:flutter_g2/page/users/users_view.dart';
 import 'package:flutter_g2/service/prefs.dart';
 
@@ -15,7 +16,11 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  List<Widget?> pages = [const UsersView(), const FruitsView()];
+  List<Widget?> pages = [
+    const UsersView(),
+    const FruitsView(),
+    const TechnoView()
+  ];
   void logout() async {
     try {
       final profileDeleted = await Prefs.deleteDataFromLocal(key: 'data');
@@ -54,6 +59,8 @@ class _HomeViewState extends State<HomeView> {
                 icon: Icon(Icons.data_object_sharp), label: 'SQL'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.data_object_sharp), label: 'NoSQL'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.data_object_sharp), label: 'Local'),
           ]),
           tabBuilder: (context, index) => pages[index]!),
     );
