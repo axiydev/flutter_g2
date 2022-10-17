@@ -6,6 +6,7 @@ import 'package:flutter_g2/page/auth/sign_up.dart';
 import 'package:flutter_g2/page/fruits/fruits_view.dart';
 import 'package:flutter_g2/page/home/home_view.dart';
 import 'package:flutter_g2/page/users/users_view.dart';
+import 'package:flutter_g2/service/no_sql_src.dart';
 import 'package:flutter_g2/service/prefs.dart';
 import 'package:flutter_g2/service/sql_src.dart';
 /*
@@ -19,6 +20,7 @@ Mavzu:::Shared Preferences
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SqlService();
+  HiveDbSrc();
   runApp(const MyApp());
 }
 
